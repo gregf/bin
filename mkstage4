@@ -7,9 +7,9 @@ then
   exit 1
 fi
 
-# checks for correct cmdline usage                  
-if [ "$#" == "0" ]                  
-then                  
+# checks for correct cmdline usage
+if [ "$#" == "0" ]
+then
     echo "`basename $0`: too few arguments."
     echo "syntax: \$ `basename $0` [-q|--quiet] <backup-filename> [custom-tar-options]"
   echo "-q, --quiet: activates quiet mode (no confirmation)."

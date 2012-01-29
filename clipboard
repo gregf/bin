@@ -1,4 +1,4 @@
 #!/bin/sh
 REGEX="((ftp|http|mail)(s)?:\/\/)?\w?.\w*.\w{2,}.*?"
 ${BROWSER} `xclip -o`
-exit 0 
+exit 0

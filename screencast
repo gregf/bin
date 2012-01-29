@@ -112,18 +112,18 @@ fi
 # stop recordings
 echo ""
 echo "Terminating recordings ..."
-kill -15 $pidVideo $pidAudio 
+kill -15 $pidVideo $pidAudio
 kill -15 $pidSilence
 wait
 
 # filter and normalize the audio
-echo "" 
-echo "Filtering and normalizing sound ..." 
+echo ""
+echo "Filtering and normalizing sound ..."
 sox --norm -s -b 16 -L -r 44100 -c 2 "$baseName.raw" "$baseName.wav"  highpass 65 lowpass 12k
 
 # encode video and audio into avi file
-echo "" 
-echo "Encoding to final avi ..." 
+echo ""
+echo "Encoding to final avi ..."
 ffmpeg -isync -i "$baseName.wav" -i "$baseName.mpeg" -acodec mp2 -ab 192k -vcodec copy "$baseName.avi"
 
 # convert to ogg - to turn on uncomment next three lines

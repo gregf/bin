@@ -12,7 +12,7 @@ echo "ssh $HOST mkdir .ssh..."
 ssh $HOST mkdir .ssh
 
 echo "scp id_*.pub $HOST:.ssh/..."
-scp id_*.pub $HOST:.ssh/ 
+scp id_*.pub $HOST:.ssh/
 
 echo "for key in id_*.pub; do..."
 for key in id_*.pub; do

@@ -86,12 +86,12 @@ my %Options = (
 );
 
 my %id3_names = (
-	# long id?           # short id?         
-	TCON => "GENRE",     TCO  => "GENRE",    
-	TRCK => "TRACKNUM",  TRK  => "TRACKNUM", 
-	TALB => "ALBUM",     TAL  => "ALBUM",    
-	TPE1 => "ARTIST",    TP1  => "ARTIST",   
-	TIT2 => "TITLE",     TT2  => "TITLE",    
+	# long id?           # short id?
+	TCON => "GENRE",     TCO  => "GENRE",
+	TRCK => "TRACKNUM",  TRK  => "TRACKNUM",
+	TALB => "ALBUM",     TAL  => "ALBUM",
+	TPE1 => "ARTIST",    TP1  => "ARTIST",
+	TIT2 => "TITLE",     TT2  => "TITLE",
 	TYER => "YEAR",      TYE  => "YEAR",
 );
 
@@ -290,7 +290,7 @@ Option:
                                     %a: artist name
                                     %t: song title
                                     %A: album name
-				  You can specify subdirectories in the rename 
+				  You can specify subdirectories in the rename
 				  pattern. "%a - %A/%T. %t" will rename and move
 				  the files. "%a -%A/" moves the files to new
 				  subdirectories without renaming.
@@ -324,7 +324,7 @@ sub rename_file {
 	    $directives{$_} =~ s|/| |g;
 	}
 	$directives{'o'} =~ s/\.[^.]*$//;
-	
+
 	$rename_pattern ||= "%T. %a - %t";
 
 	if ($convert_spaces) {
@@ -349,7 +349,7 @@ sub rename_file {
 		if ($@) {
 			die "Couldn't create $new_path: $@\n";
 		}
-		
+
 		rename($file, $new_path)
 			or die "Couldn't rename \`$file' to \`$new_path': $!\n";
 	}
@@ -674,7 +674,7 @@ sub sane {
 		                "not found in path!";
 		return 0;
 	}
-	
+
 	return 1;
 }
 

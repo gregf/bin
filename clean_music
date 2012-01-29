@@ -5,5 +5,5 @@ EXTS=("*.jpg" "*.nfo" "*.gif" "*.ini" "*.txt" "*.url" "*.m3u" "*.dat" "*.sfv" "*
 cd /storage/music/ || exit 1
 
 for ext in ${EXTS[@]}; do
-    find . -iname "${ext}" -exec rm {} \; 
+    find . -iname "${ext}" -exec rm {} \;
 done
