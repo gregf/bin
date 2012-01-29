@@ -93,7 +93,7 @@ sub extract_info {
   }
 
   return {
-    title => $title, 
+    title => $title,
     meta_title => $meta_title,
   };
 }
@@ -163,7 +163,7 @@ sub title_to_filename {
   $title =~ s/\s+/_/g;
   $title =~ s/[^\w\-,()&]/_/g;
   $title =~ s/^_+|_+$//g;   # underscores at the start and end look bad
- 
+
   return get_video_filename($type) unless $title;
 
   return "$title.$type";
@@ -172,15 +172,15 @@ sub title_to_filename {
 sub get_video_filename {
   my($type) = @_;
   $type ||= "flv";
-  return "video" . get_timestamp_in_iso8601_format() . "." . $type; 
+  return "video" . get_timestamp_in_iso8601_format() . "." . $type;
 }
 
-sub get_timestamp_in_iso8601_format { 
-  use Time::localtime; 
-  my $time = localtime; 
-  return sprintf("%04d%02d%02d%02d%02d%02d", 
-                 $time->year + 1900, $time->mon + 1, 
-                 $time->mday, $time->hour, $time->min, $time->sec); 
+sub get_timestamp_in_iso8601_format {
+  use Time::localtime;
+  my $time = localtime;
+  return sprintf("%04d%02d%02d%02d%02d%02d",
+                 $time->year + 1900, $time->mon + 1,
+                 $time->mday, $time->hour, $time->min, $time->sec);
 }
 
 sub get_vlc_exe_from_registry {
@@ -196,7 +196,7 @@ sub get_vlc_exe_from_registry {
   require Win32::Registry;
 
   Win32::Registry->import();
-  
+
   my $local_machine;
 
   {
@@ -226,7 +226,7 @@ sub get_vlc_exe_from_registry {
       last;
     }
   }
-  
+
   return $vlc_binary;
 }
 
@@ -304,7 +304,7 @@ sub convert_sami_subtitles_to_srt {
           $milliseconds);
 
       if ($count and !$subtitles[$count - 1]->{end}) {
-        $subtitles[$count - 1]->{end} = $begin;      
+        $subtitles[$count - 1]->{end} = $begin;
       }
 
       if (!$subtitle_text or $subtitle_text eq ' ') {
@@ -395,7 +395,7 @@ sub search {
   }
 
   my $xml = from_xml($browser, KeyAttr => [], ForceArray => ['entry']);
-  
+
   my @matches = map { _process_4od_result($_) }
                 grep { $_->{author}->{name} =~ /^4oD\w+$/i } @{ $xml->{entry} };
 
@@ -510,7 +510,7 @@ sub handle_abc_clip {
     "http://ll.static.abc.com/vp2/ws/s/contents/1000/videomrss?" .
     "brand=001&device=001&width=644&height=362&clipId=%s" .
     "&start=0&limit=1&fk=CATEGORIES&fv=%s";
-  
+
   my $abc_clip_rss_url = sprintf $abc_clip_rss_url_template,
                                  $video_id, $playlist_id;
 
@@ -772,7 +772,7 @@ sub find_video {
 sub can_handle {
   my($self, $browser, $url) = @_;
 
-  return $browser->content =~ $JS_RE; 
+  return $browser->content =~ $JS_RE;
 }
 
 1;
@@ -804,7 +804,7 @@ sub find_video {
   }
   else {
     my ($video_id, $session_id);
-    
+
     if ($browser->content =~
       /swfParams\.mediaObjectId = ["'](.*?)["']/) {
       $video_id = $1;
@@ -842,7 +842,7 @@ sub parse_smil_like_xml {
 
   my $title;
 
-  my $video_ref = $parsed_smil->{videoObject}->{smil}->{body}->{switch}->{video}; 
+  my $video_ref = $parsed_smil->{videoObject}->{smil}->{body}->{switch}->{video};
   if (ref($video_ref) ne 'ARRAY') {
     my $id;
 
@@ -858,7 +858,7 @@ sub parse_smil_like_xml {
       }
     }
 
-    $video_ref = $parsed_smil->{videoObject}->{$id}->{smil}->{body}->{switch}->{video}; 
+    $video_ref = $parsed_smil->{videoObject}->{$id}->{smil}->{body}->{switch}->{video};
   }
 
   my @different_quality_videos = map { $_->{src} }
@@ -1051,7 +1051,7 @@ sub find_video {
 
     $data->{app} = "$info->{application}?_fcs_vhost=$info->{server}" .
                    "&$token";
-                    
+
     $data->{tcUrl} = "rtmp://$info->{server}/$info->{application}?_fcs_vhost=$info->{server}"
             . "&$token";
 
@@ -1442,7 +1442,7 @@ sub find_video {
           "in your area";
     exit 1;
   }
- 
+
   $browser->allow_redirects;
 
   $browser->content =~ /<h1[^>]*>(.*?)<\//;
@@ -1710,7 +1710,7 @@ sub _get_soap_xml {
     <i0:pu></i0:pu>
     <i0:pid>1F866AF1-1DB0-4864-BCA1-6236377B518F</i0:pid>
   </i0:rq>
-</i0:ad> 
+</i0:ad>
 </SOAP-ENV:Body>
 </SOAP-ENV:Envelope>
 EOF
@@ -1776,7 +1776,7 @@ sub find_video {
   }
 
   $browser->post(
-    "http://freevideo.ru/video/view/url/-/" . int(rand 100_000), 
+    "http://freevideo.ru/video/view/url/-/" . int(rand 100_000),
     [
       onLoad       => '[type Function]',
       highquality  => 0,
@@ -1970,7 +1970,7 @@ sub play {
 
         my $binary_no_path = File::Basename::basename $vlc_binary;
 
-        my $binary_just_path = File::Basename::dirname $vlc_binary; 
+        my $binary_just_path = File::Basename::dirname $vlc_binary;
 
         my $process;
         Win32::Process::Create(
@@ -2015,7 +2015,7 @@ sub download {
       $self->{stream}->() if defined $self->{stream};
       return;
     }
-    
+
     info "File $self->{printable_filename} already exists, seeing if resuming is supported.";
     if (!$response->header('Accept-Ranges')) {
       if(!$::opt{yes}) {
@@ -2035,14 +2035,14 @@ sub download {
 
   open my $video_fh, $mode, $file or die $!;
   binmode $video_fh;
-  $self->{fh} = $video_fh; 
+  $self->{fh} = $video_fh;
 
   info "Downloading $url...";
   if ($offset) {
     $browser->add_header("Range", "bytes=$offset-");
   }
-  my $response = $browser->get($url, 
-    ':content_cb' => sub { 
+  my $response = $browser->get($url,
+    ':content_cb' => sub {
         my ($data, $response) = @_;
 
         if (!$self->{content_length}) {
@@ -2347,7 +2347,7 @@ sub search {
   my($self, $search, $type) = @_;
 
   my $browser = FlashVideo::Mechanize->new;
-  
+
   $browser->get('http://video.google.com/');
 
   $browser->submit_form(
@@ -2358,11 +2358,11 @@ sub search {
 
   return unless $browser->success;
 
-  my @links = map  { 
+  my @links = map  {
                      chomp(my $name = $_->text);
                      { name => $name, url => $_->url_abs->as_string }
               }
-              grep { 
+              grep {
                 $_->attrs->{onclick} =~ /return resultClick/
                 || $_->attrs->{onmousedown} =~ /video_result/
                 || $_->attrs->{class} eq 'l'
@@ -2572,7 +2572,7 @@ sub find_video {
 
   my $file_embed_tag;
   if ($browser->content =~ /file_embed_tag(?:%3D|=)(\w+)\W/) {
-    $file_embed_tag = $1; 
+    $file_embed_tag = $1;
   }
   else {
     die "Unable to get file_embed_tag";
@@ -2916,7 +2916,7 @@ sub find_video {
     $browser->content =~ /id="videosPageMainTitleH1">(.*?)</s;
     $title = $1;
   }
-  
+
   my $filename = title_to_filename(decode_entities($title));
 
   my $flashvars = ($browser->content =~ m'flashvars:(?:\s+getPlayerData\(\)\s+\+\s+)?"([^"]+)')[0];
@@ -2974,7 +2974,7 @@ sub find_video {
 sub can_handle {
   my($self, $browser, $url) = @_;
 
-  return $browser->content =~ $JS_RE; 
+  return $browser->content =~ $JS_RE;
 }
 
 1;
@@ -3092,7 +3092,7 @@ sub find_video {
   return {
     rtmp => $rtmpurl,
     swfUrl => "http://www.nbc.com/[[IMPORT]]/video.nbcuni.com/outlet/extensions/inext_video_player/video_player_extension.swf?4.5.3",
-    tcUrl => "rtmp://$ip:$port/$app?_fcs_vhost=$host", 
+    tcUrl => "rtmp://$ip:$port/$app?_fcs_vhost=$host",
     flv => title_to_filename($title)
   };
 }
@@ -3141,7 +3141,7 @@ bHV0aW9uPTEwMjQsNzY4LCBkcGk9OTY=
 EOF
 
   my $data = Data::AMF::Packet->new->deserialize($packet);
-   
+
   $data->messages->[0]->{value}->[1] = $data->messages->[1]->{value}->[1] = $mid;
 
   $data = $data->serialize;
@@ -3158,7 +3158,7 @@ EOF
 
   $data = $browser->content;
 
- 
+
   my($title) = $data =~ m'title.{3}([^\0]+)';
 
 
@@ -3283,7 +3283,7 @@ sub find_video {
   my ($self, $browser, $page_url) = @_;
 
   my $video_info_url;
-  my $host = $browser->uri->host; 
+  my $host = $browser->uri->host;
 
   if ( ($browser->content =~ /data_url:\s+'([^']+)'/) or
        ($browser->content =~ m{displayVideoPlayer\('([^']+)'\)})) {
@@ -3306,7 +3306,7 @@ sub find_video {
     die "Couldn't download Red Bull video info XML: " .
       $browser->response->status_line;
   }
-  
+
   my $xml = $browser->content;
   $xml =~ s/&amp;//g;
   $xml = decode_entities($xml);
@@ -3314,14 +3314,14 @@ sub find_video {
   my $video_info = from_xml($xml);
 
   my $file_type = "flv";
-  
+
   if ($video_info->{high_video_url} =~ /\.mp4$/) {
     $file_type = "mp4";
   }
 
   return {
     flv  => title_to_filename($video_info->{title}, $file_type),
-    rtmp => $video_info->{high_video_url}, 
+    rtmp => $video_info->{high_video_url},
   };
 }
 
@@ -3393,7 +3393,7 @@ sub find_video {
   (my $content = $browser->content) =~ s{\\/}{/}g;
 
   my %seen; # avoid duplication in filenames
-  
+
   my %metadata = map { $_ => '' } qw(brandTitle seriesTitle programmeTitle);
 
   foreach my $metadata_item (keys %metadata) {
@@ -3447,7 +3447,7 @@ sub find_video {
       $browser->get($subtitles_url);
 
       if ($browser->success) {
-        my $srt_filename = title_to_filename($title, "srt"); 
+        my $srt_filename = title_to_filename($title, "srt");
 
         convert_sami_subtitles_to_srt($browser->content, $srt_filename);
 
@@ -3601,7 +3601,7 @@ sub find_video {
   $browser->get($configpath);
 
   my $config = from_xml($browser);
-  
+
   my($title, $location);
 
   eval {
@@ -3749,7 +3749,7 @@ sub find_video {
   my $perfomer_id;
 
   if ($browser->content =~ /profileUserId=(\d+)/) {
-    $perfomer_id = $1;  
+    $perfomer_id = $1;
   }
   else {
     die "Can't get performer ID";
@@ -3781,7 +3781,7 @@ sub find_video {
     if ($name eq 'freeServerIP') {
       $value = (split /,/, $value)[0];
     }
-    
+
     $stream_info{$name} = $value;
   }
 
@@ -4185,7 +4185,7 @@ sub find_video {
   }
 
   my $type = $info{fileurl} =~ /\.mp4/i ? 'mp4' : 'flv';
-  
+
   return $info{fileurl}, title_to_filename($info{title}, $type);
 }
 
@@ -4474,11 +4474,11 @@ sub find_video {
     $playlist_url =
       "http://www.videojug.com/views/interview/playlist.aspx?ar=16_9&id=";
 
-    $interview_clip = $browser->uri->fragment; 
+    $interview_clip = $browser->uri->fragment;
   }
 
   my $video_id;
-  
+
   if ($browser->content =~
     /<meta name=["']video-id["'] content="([A-F0-9a-f\-]+)"/) {
     $video_id = $1;
@@ -4500,7 +4500,7 @@ sub find_video {
     my ($prefix, $title);
 
     if ($interview_clip) {
-      ($prefix, $title) = get_prefix_and_title($xml, $interview_clip); 
+      ($prefix, $title) = get_prefix_and_title($xml, $interview_clip);
     }
     else {
       $prefix = $xml->{Items}->{Media}->{Prefix};
@@ -4564,7 +4564,7 @@ sub find_video {
     playpath => $playpath,
     flv      => title_to_filename("$author - $title")
   };
-    
+
   return $data;
 }
 
@@ -4640,7 +4640,7 @@ sub find_video {
   my $file_type = 'flv';
 
   $browser->head($url);
-  
+
   if (!$browser->success) {
     die "Couldn't do HEAD request $url: " . $browser->response->status_line;
   }
@@ -4662,7 +4662,7 @@ sub find_video {
     }
   }
   else {
-    die "Unexpected Content-Type ($content_type) from Wat server."; 
+    die "Unexpected Content-Type ($content_type) from Wat server.";
   }
 
   my $filename = title_to_filename($title, $file_type);
@@ -4696,7 +4696,7 @@ sub find_video {
   $browser->content =~ /(?:<span class="style5">|<td style="font-size: 20px;">\s*)<strong>([^<]+)/;
 
   my $filename = title_to_filename($1);
-    
+
   return $url, $filename;
 }
 
@@ -4756,7 +4756,7 @@ sub find_video {
     $videoID, rand( 10000 ), 3 );
   $check_response->( "Couldn't grab video informaton from youku, server response was %s" );
 
-  return parse_video_info( $browser, $browser->content );  
+  return parse_video_info( $browser, $browser->content );
 }
 
 sub parse_video_info {
@@ -5108,7 +5108,7 @@ sub verify_age {
   my($browser) = @_;
   my $orig_uri = $browser->uri;
 
-  if ($browser->response->code == 303 
+  if ($browser->response->code == 303
     && $browser->response->header('Location') =~ m!/verify_age|/accounts/!) {
 
     my $confirmation_url = $browser->response->header('Location');
@@ -5262,7 +5262,7 @@ sub parse_youtube_format_url_map {
 
     $map->{$format} = $url;
   }
-  
+
   return $map;
 }
 
@@ -5359,7 +5359,7 @@ sub find_video {
     if ($flv_urls[-1] =~ /^http%3a%2f%2f/) {
       $flv_urls[-1] = uri_unescape($flv_urls[-1])
     }
-    
+
     $actual_url = url_exists($browser->clone, $flv_urls[-1]);
   }
 
@@ -5399,7 +5399,7 @@ sub find_video {
   }
 
   my @filenames;
-  
+
   return $actual_url, $possible_filename if $filename_is_reliable;
 
   $possible_filename =~ s/\?.*//;
@@ -5411,7 +5411,7 @@ sub find_video {
     $title && $title !~ /\Q$possible_filename\E/i;
 
   push @filenames, get_video_filename() if !@filenames;
-  
+
   return $actual_url, @filenames if $actual_url;
 
 
@@ -5512,7 +5512,7 @@ sub find_file_param {
   if($param =~ m{(rtmp://[^ &"']+)}) {
     info "This looks like RTMP ($1), no generic support yet..";
   }
-  
+
   return;
 }
 
@@ -5605,11 +5605,11 @@ sub find_package {
   my $package = find_package_url($url, $browser);
 
   if(!defined $package) {
- 
+
     for my $possible_url($browser->content =~
         m!(?:<object[^>]+>.*?|<(?:script|embed|iframe|param) [^>]*(?:src=["']?|name=["']src["']\ value=["']))(http://[^"'> ]+)!gixs) {
       $package = find_package_url($possible_url, $browser);
-    
+
       return _found($package, $possible_url) if defined $package;
     }
   }
@@ -5708,7 +5708,7 @@ sub download {
   my($r_fh, $w_fh); # So Perl doesn't close them behind our back..
 
   if ($rtmp_data->{live} && $::opt{play}) {
-   
+
     pipe($r_fh, $w_fh);
 
     my $pid = fork;
@@ -5805,7 +5805,7 @@ sub run {
       kill 'TERM', $pid;
       exit;
     };
-  } 
+  }
 
   my $complete = 0;
   my $buf = "";
@@ -5889,10 +5889,10 @@ my @sites_with_search = ('4oD', 'GoogleVideoSearch');
 sub search {
   my ($search, $max_per_site, $max_results) = @_;
 
-  my @search_sites = map { /^FlashVideo::Site::/ ? $_ 
+  my @search_sites = map { /^FlashVideo::Site::/ ? $_
                                                  : "FlashVideo::Site::$_"; }
                      map { ucfirst lc } @sites_with_search;
- 
+
   unless ($::SCRIPT_NAME) {
     eval "require $_" for @search_sites;
   }
@@ -6011,12 +6011,12 @@ sub name {
 sub choose {
   my($self, @available) = @_;
 
-  
+
 
   my $max_preferred_res = $self->quality_to_resolution($self->name);
   my $max_preferred_size = $max_preferred_res->[0] * $max_preferred_res->[1];
 
-  my @sorted = 
+  my @sorted =
     sort { $a->[0] <=> $b->[0] }
     map { my $r = $_->{resolution}; $r = $r->[0] * $r->[1]; [$r, $_] } @available;
 
@@ -6192,13 +6192,13 @@ A required Perl module for downloading this video is not installed.
 EOF
 
 use constant FRIENDLY_FAILURE => <<EOF;
-  
+
 Couldn't extract Flash movie URL. This site may need specific support adding,
 or fixing.
 
 Please confirm the site is using Flash video and if you have Flash available
 check that the URL really works(!).
-  
+
 Check for updates by running: $0 --update
 
 If the latest version does not support this please open a bug (or
@@ -6279,7 +6279,7 @@ if ($search) {
         "Downloading only match for '$search': '$results[0]->{name}'" :
         "Downloading first match for '$search': '$results[0]->{name}'" ;
       info $message;
-           
+
       push @download_urls, $results[0]->{url};
     }
     else {
@@ -6287,7 +6287,7 @@ if ($search) {
 
       my $columns = get_terminal_width() - 5;
       local $Text::Wrap::columns = $columns;
-    
+
       my $count = 1;
       for my $result(@results) {
         printf "[%2d] %s\n", $count, $result->{name};
@@ -6304,7 +6304,7 @@ if ($search) {
             "(separate multiple with comma or space): ";
       chomp(my $choice = <STDIN>);
       $choice ||= 1;
-      
+
       for(split /[ ,]+/, $choice) {
         if (/-/) {
           my ($lower, $upper) = split /-/, $choice;
@@ -6333,7 +6333,7 @@ if ($search) {
     print STDERR "No results found for '$search'.\n";
     exit 1;
   }
-  
+
 }
 else {
   @download_urls = @urls;
@@ -6591,7 +6591,7 @@ sub update_plugins {
 sub install_plugin {
   my ($browser, $url, $file) = @_;
 
-  my $plugin_exists = -f $file; 
+  my $plugin_exists = -f $file;
 
   my $new_file = $plugin_exists ? "$file.new" : $file;
 
@@ -6608,7 +6608,7 @@ sub install_plugin {
       info "(previous version backed up to $file.old).";
     }
     else {
-      info "New plugin $short_name installed as $file"; 
+      info "New plugin $short_name installed as $file";
     }
 
     return 1;
@@ -6634,7 +6634,7 @@ sub plugin_loader {
       return $plugin_fh; # Perl then reads the plugin from the FH
     }
   }
-  
+
   return;
 }
 

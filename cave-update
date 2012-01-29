@@ -37,7 +37,7 @@ ${CAVE} resolve -x sys-apps/paludis > ${LOGFILE}
 
 if [[ $? -ne 0 ]]; then
     echo "Failed updating Paludis!"
-    echo "Please read the log" 
+    echo "Please read the log"
     REMOVE_LOG=false
 fi
 

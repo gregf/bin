@@ -19,8 +19,8 @@ function compile {
     ${SVN} co ${SUBVERSION_URL} quake2world
     cd quake2world
     autoreconf -i
-    ./configure 
-    make 
+    ./configure
+    make
     ${SUDO} make install
 }
 
